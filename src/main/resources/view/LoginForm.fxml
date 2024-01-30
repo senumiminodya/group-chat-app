@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="335.0" prefWidth="516.0" style="-fx-background-color: FFE162;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.groupChat.controller.LoginFormController">
+    <children>
+        <Label alignment="CENTER" layoutX="183.0" layoutY="37.0" prefHeight="42.0" prefWidth="150.0" text="E-CHATS">
+            <font>
+                <Font name="Courier New Bold" size="24.0" />
+            </font>
+        </Label>
+        <ImageView fitHeight="60.0" fitWidth="73.0" layoutX="142.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../assets/groupChatLogo.png" />
+            </image>
+        </ImageView>
+      <Label layoutX="133.0" layoutY="88.0" prefHeight="42.0" prefWidth="251.0" text="Chat With Anyone You Want,">
+         <font>
+            <Font name="Courier New Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="142.0" layoutY="130.0" prefHeight="42.0" prefWidth="233.0" text="About Anything You Want.">
+         <font>
+            <Font name="Courier New Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="55.0" layoutY="203.0" prefHeight="42.0" prefWidth="173.0" text="Enter Your Name :">
+         <font>
+            <Font name="Courier New Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtName" layoutX="228.0" layoutY="203.0" prefHeight="42.0" prefWidth="233.0" />
+      <JFXButton fx:id="joinChatBtn" buttonType="RAISED" layoutX="206.0" layoutY="271.0" onAction="#joinChatBtnOnAction" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #91C483; -fx-cursor: hand;" text="Join Chat">
+         <font>
+            <Font name="Courier New Bold" size="15.0" />
+         </font>
+      </JFXButton>
+    </children>
+</AnchorPane>
