@@ -17,6 +17,10 @@ public class LoginFormController {
     @FXML
     private TextField txtName;
 
+    public void initialize() {
+
+    }
+
     @FXML
     void joinChatBtnOnAction(ActionEvent event) throws IOException {
         if (!txtName.getText().isEmpty()&&txtName.getText().matches("[A-Za-z0-9]+")){
@@ -25,7 +29,7 @@ public class LoginFormController {
 
             ClientFormController controller = new ClientFormController();
             controller.setClientName(txtName.getText()); // Set the parameter
-            //fxmlLoader.setController(controller);
+            fxmlLoader.setController(controller);
 
             primaryStage.setScene(new Scene(fxmlLoader.load()));
             primaryStage.setTitle(txtName.getText());
