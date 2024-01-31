@@ -17,6 +17,7 @@ public class EmojiPicker extends VBox {
         // Load the emoji images
         List<String> emojis = new ArrayList<>();
 
+        // Array containing HTML representations of emojis
         String[] emojiHtmlList = new String[]{"&#128514;","&#10084;","&#128525;","&#129315;","&#128522;",
                 "&#128591;","&#128149;","&#128557;","&#128293;","&#128536;","&#128077;","&#129392;","&#128526;","&#128518;",
                 "&#128513;","&#128521;","&#129300;","&#128517;","&#128532;","&#128580;","&#128540;","&#9829;","&#9851;","&#128530;",
@@ -25,6 +26,7 @@ public class EmojiPicker extends VBox {
                 "&#127881;","&#128158;","&#9996;","&#10024;","&#129335;","&#128561;","&#128524;","&#127800;",
                 "&#128588;","&#128523;","&#127770;","&#127773;","&#128584;","&#128585;","&#128586;"};
 
+        // Parse HTML representations to Unicode and add to the list
         for (String em:emojiHtmlList) {
             emojis.add(EmojiParser.parseToUnicode(em));
         }
@@ -34,7 +36,7 @@ public class EmojiPicker extends VBox {
         emojiListView.setItems(FXCollections.observableArrayList(emojis));
 
         // Customize the appearance of the list view
-//        emojiListView.setCellFactory(param -> new EmojiCell());
+        // emojiListView.setCellFactory(param -> new EmojiCell());
 
         // Create the emoji picker hBox
         HBox hBox = new HBox(emojiListView);
@@ -44,6 +46,7 @@ public class EmojiPicker extends VBox {
         getChildren().add(hBox);
     }
 
+    // Getter method for the emojiListView
     public ListView<String> getEmojiListView() {
         return emojiListView;
     }

@@ -19,8 +19,11 @@ public class ClientLauncher extends Application {
         fxmlLoader.setController(controller);
         primaryStage.setScene(new Scene(fxmlLoader.load()));
 
+        //Create a new stage for the login form
         Stage stage = new Stage();
+        //Set modality to WINDOW_MODEL (blocks events from being delivered to any other windows)
         stage.initModality(Modality.WINDOW_MODAL);
+        //Set the owner of the login stage to the primary stage
         stage.initOwner(primaryStage.getScene().getWindow());
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/LoginForm.fxml"))));
         stage.setTitle("EChat");

@@ -23,6 +23,7 @@ public class LoginFormController {
 
     @FXML
     void joinChatBtnOnAction(ActionEvent event) throws IOException {
+        // Check if the name is not empty and contains only letters and numbers
         if (!txtName.getText().isEmpty()&&txtName.getText().matches("[A-Za-z0-9]+")){
             Stage primaryStage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/ClientForm.fxml"));
@@ -35,7 +36,10 @@ public class LoginFormController {
             primaryStage.setTitle(txtName.getText());
             primaryStage.setResizable(false);
             primaryStage.centerOnScreen();
+
+            // Set an event handler for the close request of the primary stage
             primaryStage.setOnCloseRequest(windowEvent -> {
+                // Perform cleanup tasks when the client exists
                 controller.shutdown();
             });
             primaryStage.show();
