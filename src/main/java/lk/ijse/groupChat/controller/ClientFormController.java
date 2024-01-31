@@ -20,11 +20,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import lk.ijse.groupChat.emaji.EmojiPicker;
 
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.time.LocalTime;
@@ -76,9 +79,20 @@ public class ClientFormController {
 
                     // Keep listening for incoming messages
                     while (socket.isConnected()){
-                        String receivingMsg = dataInputStream.readUTF();
+                        /*String receivingMsg = dataInputStream.readUTF();
                         // Process the received message
                         receiveMessage(receivingMsg, ClientFormController.this.vBox);
+                        receiveImage(receivingMsg, ClientFormController.this.vBox);*/
+                        String receivingMsg = dataInputStream.readUTF();
+
+                        // Process the received message
+                        if (receivingMsg.matches(".*\\.(png|jpe?g|gif)$")) {
+                            // If the message is an image
+                            receiveImage(receivingMsg, ClientFormController.this.vBox);
+                        } else {
+                            // If the message is a regular text message
+                            receiveMessage(receivingMsg, ClientFormController.this.vBox);
+                        }
                     }
                 }catch (IOException e){
                     e.printStackTrace();
@@ -101,13 +115,21 @@ public class ClientFormController {
     // Event handler for the attached button
     @FXML
     void attachedBtnOnAction(ActionEvent event) {
-        FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
+        /*FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
         dialog.setMode(FileDialog.LOAD);
         dialog.setVisible(true);
         String file = dialog.getDirectory()+dialog.getFile();
         dialog.dispose();
         sendImage(file);
-        System.out.println(file + " chosen.");
+        System.out.println(file + " chosen.");*/
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select File to Open");
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if (file != null) {
+            sendImage(file);
+            System.out.println(file.getAbsolutePath() + " chosen.");
+        }
     }
 
     @FXML
@@ -142,7 +164,7 @@ public class ClientFormController {
             }
         });
 
-        // Set the selected emoji from the picker to the text field
+        // Set the selected emoji from the picker to the text field (Used lambda expressions here)
         emojiPicker.getEmojiListView().setOnMouseClicked(event -> {
             String selectedEmoji = emojiPicker.getEmojiListView().getSelectionModel().getSelectedItem();
             if (selectedEmoji != null) {
@@ -153,8 +175,8 @@ public class ClientFormController {
     }
 
     // Method to send an image to the server
-    private void sendImage(String msgToSend) {
-        Image image = new Image(msgToSend);
+    private void sendImage(File file) {
+        /*Image image = new Image(msgToSend);
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(200);
         imageView.setFitWidth(200);
@@ -168,6 +190,25 @@ public class ClientFormController {
 
         try {
             dataOutputStream.writeUTF(clientName + "-" +msgToSend);
+            dataOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(200);
+        imageView.setFitWidth(200);
+
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(5, 5, 5, 10));
+        hBox.getChildren().add(imageView);
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+
+        vBox.getChildren().add(hBox);
+
+        try {
+            dataOutputStream.writeUTF(clientName + "-" + file.getAbsolutePath());
             dataOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -306,6 +347,71 @@ public class ClientFormController {
                 }
             });
         }
+    }
+
+    // Method to receive and display images
+    private static void receiveImage(String msgFromClient, VBox vBox) {
+        /*// Extract the sender's name from the message
+        String name = msgFromClient.split("[-]")[0];
+
+        // Create an ImageView from the image file
+        Image image = new Image(msgFromClient.split("[-]")[1]);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(200);
+        imageView.setFitWidth(200);
+
+        // Create an HBox to hold the image
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        hBox.setPadding(new Insets(5, 5, 5, 10));
+        hBox.getChildren().add(imageView);
+
+        // Update the UI in the JavaFX application thread
+        Platform.runLater(() -> {
+            // Set the sender's name in the UI
+            HBox hBoxName = new HBox();
+            hBoxName.setAlignment(Pos.CENTER_LEFT);
+            Text textName = new Text(name);
+            TextFlow textFlowName = new TextFlow(textName);
+            hBoxName.getChildren().add(textFlowName);
+
+            vBox.getChildren().add(hBoxName);
+            vBox.getChildren().add(hBox);
+        });*/
+        // Extract the sender's name from the message
+        String name = msgFromClient.split("[-]")[0];
+
+        // Create an ImageView from the image file
+        String imagePath = msgFromClient.split("[-]")[1];
+
+        // Use File to create a file URL
+        File file = new File(imagePath);
+        String fileUrl = file.toURI().toString();
+
+        // Create an Image using the file URL
+        Image image = new Image(fileUrl);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(200);
+        imageView.setFitWidth(200);
+
+        // Create an HBox to hold the image
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        hBox.setPadding(new Insets(5, 5, 5, 10));
+        hBox.getChildren().add(imageView);
+
+        // Update the UI in the JavaFX application thread
+        Platform.runLater(() -> {
+            // Set the sender's name in the UI
+            HBox hBoxName = new HBox();
+            hBoxName.setAlignment(Pos.CENTER_LEFT);
+            Text textName = new Text(name);
+            TextFlow textFlowName = new TextFlow(textName);
+            hBoxName.getChildren().add(textFlowName);
+
+            vBox.getChildren().add(hBoxName);
+            vBox.getChildren().add(hBox);
+        });
     }
 
     // Method to set the client's name
