@@ -188,7 +188,20 @@ public class ClientFormController {
         hBox.getChildren().add(imageView);
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
+        HBox hBoxTime = new HBox();
+        hBoxTime.setAlignment(Pos.CENTER_RIGHT);
+        hBoxTime.setPadding(new Insets(0, 5, 5, 10));
+
+        //Get the current time and format it
+        String stringTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+        Text time = new Text(stringTime);
+        time.setStyle("-fx-font-size: 8");
+
+        hBoxTime.getChildren().add(time);
+
+        //Add the message and its timestamp to the vBox
         vBox.getChildren().add(hBox);
+        vBox.getChildren().add(hBoxTime);
 
         try {
             // Send a message to the server with the client's name and the absolute path of the file
