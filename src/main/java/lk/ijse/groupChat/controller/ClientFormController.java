@@ -176,25 +176,8 @@ public class ClientFormController {
 
     // Method to send an image to the server
     private void sendImage(File file) {
-        /*Image image = new Image(msgToSend);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(200);
-//        TextFlow textFlow = new TextFlow(imageView);
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(5,5,5,10));
-        hBox.getChildren().add(imageView);
-        hBox.setAlignment(Pos.CENTER_RIGHT);
 
-        vBox.getChildren().add(hBox);
-
-        try {
-            dataOutputStream.writeUTF(clientName + "-" +msgToSend);
-            dataOutputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
+        // Create an Image object from the file's URI and initialize an ImageView with it
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(200);
@@ -208,6 +191,7 @@ public class ClientFormController {
         vBox.getChildren().add(hBox);
 
         try {
+            // Send a message to the server with the client's name and the absolute path of the file
             dataOutputStream.writeUTF(clientName + "-" + file.getAbsolutePath());
             dataOutputStream.flush();
         } catch (IOException e) {
@@ -351,33 +335,7 @@ public class ClientFormController {
 
     // Method to receive and display images
     private static void receiveImage(String msgFromClient, VBox vBox) {
-        /*// Extract the sender's name from the message
-        String name = msgFromClient.split("[-]")[0];
 
-        // Create an ImageView from the image file
-        Image image = new Image(msgFromClient.split("[-]")[1]);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(200);
-
-        // Create an HBox to hold the image
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.setPadding(new Insets(5, 5, 5, 10));
-        hBox.getChildren().add(imageView);
-
-        // Update the UI in the JavaFX application thread
-        Platform.runLater(() -> {
-            // Set the sender's name in the UI
-            HBox hBoxName = new HBox();
-            hBoxName.setAlignment(Pos.CENTER_LEFT);
-            Text textName = new Text(name);
-            TextFlow textFlowName = new TextFlow(textName);
-            hBoxName.getChildren().add(textFlowName);
-
-            vBox.getChildren().add(hBoxName);
-            vBox.getChildren().add(hBox);
-        });*/
         // Extract the sender's name from the message
         String name = msgFromClient.split("[-]")[0];
 
